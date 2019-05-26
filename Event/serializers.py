@@ -1,19 +1,6 @@
-# from django.contrib.auth.models import User
-from users.models import CustomUser
 from rest_framework import serializers
 
 from .models import Event
-
-
-class UserSerializer(serializers.HyperlinkedModelSerializer):
-    """A user serializer to aid in authentication and authorization"""
-    events = serializers.HyperlinkedRelatedField(many=True,
-                                                 view_name='details',
-                                                 read_only=True,)
-
-    class Meta:
-        model = CustomUser
-        fields = ('id', 'email', 'first_name', 'last_name', 'events')
 
 
 class EventSerializer(serializers.HyperlinkedModelSerializer):
