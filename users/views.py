@@ -1,24 +1,54 @@
-from django.contrib.auth import get_user_model
-from rest_framework import generics, permissions
+from django.contrib.auth import get_user_model, logout
+from rest_framework import viewsets, status
+from rest_framework.decorators import action
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.response import Response
 
-from .serializers import UserSerializer, UserRegisterSerializer
+from . import serializers
+from .utils import get_and_authenticate_user, create_user_account
+from base.mixins import MultipleSerializerMixin
 
 User = get_user_model()
 
 
-class UserListView(generics.ListAPIView):
-    """This view lists all the users in the database"""
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
+class AuthViewSet(MultipleSerializerMixin, viewsets.GenericViewSet):
+    permission_classes = [AllowAny, ]
+    serializer_class = serializers.EmptySerializer
+    serializer_classes = {
+        'login': serializers.UserLoginSerializer,
+        'register': serializers.UserRegisterSerializer,
+        'logout': serializers.EmptySerializer,
+        'password_change': serializers.PasswordChangeSerializer,
+        'password_reset': serializers.PasswordResetSerializer,
+        'password_confirm': serializers.PasswordResetConfirmSerializer,
+    }
 
+    @action(methods=['POST', ], detail=False)
+    def login(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = get_and_authenticate_user(**serializer.validated_data)
+        data = serializers.AuthUserSerializer(user).data
+        return Response(data=data, status=status.HTTP_200_OK)
 
-class UserDetailView(generics.RetrieveAPIView):
-    """This view retrieves the information of the user"""
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
+    @action(methods=['POST', ], detail=False)
+    def register(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = create_user_account(**serializer.validated_data)
+        data = serializers.AuthUserSerializer(user).data
+        return Response(data=data, status=status.HTTP_201_CREATED)
 
+    @action(methods=['POST', ], detail=False)
+    def logout(self, request):
+        logout(request)
+        data = {'success': 'Sucessfully logged out'}
+        return Response(data=data, status=status.HTTP_200_OK)
 
-class RegisterView(generics.CreateAPIView):
-    serializer_class = UserRegisterSerializer
-    model = User
-    permission_classes = (permissions.AllowAny,)
+    @action(methods=['POST'], detail=False, permission_classes=[IsAuthenticated, ])
+    def password_change(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        request.user.set_password(serializer.validated_data['new_password'])
+        request.user.save()
+        return Response(status=status.HTTP_204_NO_CONTENT)

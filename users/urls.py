@@ -1,14 +1,8 @@
-from django.urls import path
-from rest_framework.urlpatterns import format_suffix_patterns
-from rest_framework.authtoken import views
+from rest_framework import routers
 
-from .views import UserListView, UserDetailView, RegisterView
+from .views import AuthViewSet
 
-urlpatterns = [
-    path('users/', UserListView.as_view(), name='list-user'),
-    path('users/<int:pk>/', UserDetailView.as_view(), name='user-detail'),
-    path('register/', RegisterView.as_view(), name='register'),
-    path('api-auth-token/', views.obtain_auth_token, name='get_auth_token')
-]
+router = routers.DefaultRouter(trailing_slash=False)
+router.register('auth', AuthViewSet, basename='auth')
 
-urlpatterns = format_suffix_patterns(urlpatterns)
+urlpatterns = router.urls
