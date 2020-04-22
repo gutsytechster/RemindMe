@@ -67,6 +67,26 @@ class PasswordChangeSerializer(serializers.Serializer):
         return value
 
 
+class PasswordResetSerializer(serializers.Serializer):
+    email = serializers.EmailField(required=True)
+
+
+class PasswordResetConfirmSerializer(serializers.Serializer):
+    new_password = serializers.CharField(required=True)
+    token = serializers.CharField(required=True)
+
+    def validate_new_password(self, value):
+        password_validation.validate_password(value)
+        return value
+
+    def validate_token(self, value):
+        try:
+            Token.objects.get(key=value)
+        except Token.DoesNotExist:
+            raise serializers.ValidationError("Invalid token")
+        return value
+
+
 class AuthUserSerializer(UserSerializer):
     auth_token = serializers.SerializerMethodField()
 
