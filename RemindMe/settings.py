@@ -11,15 +11,14 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
-from os.path import join
-from dotenv import load_dotenv
 
+import environ
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-dotenv_path = join(BASE_DIR, '.env')
-load_dotenv(dotenv_path)
+env = environ.Env()
+env.read_env(os.path.join(BASE_DIR, '.env'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
@@ -115,8 +114,8 @@ AUTH_PASSWORD_VALIDATORS = [
 EMAIL_USE_TLS = True
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
-EMAIL_HOST_USER = os.getenv('USER')
-EMAIL_HOST_PASSWORD = os.getenv('PASSWORD')
+EMAIL_HOST_USER = env('EMAIL')
+EMAIL_HOST_PASSWORD = env('PASSWORD')
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 
