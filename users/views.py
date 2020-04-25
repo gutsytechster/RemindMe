@@ -44,8 +44,7 @@ class AuthViewSet(MultipleSerializerMixin, viewsets.GenericViewSet):
     def logout(self, request):
         logout(request)
         request.auth.delete()
-        data = {'success': 'Sucessfully logged out'}
-        return Response(data=data, status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
     @action(methods=['POST'], detail=False, permission_classes=[IsAuthenticated, ])
     def password_change(self, request):

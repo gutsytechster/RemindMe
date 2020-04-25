@@ -87,6 +87,14 @@ Status: 201 Created
     "auth_token": "eyJ0aXAiOiJqV1QiLCJhbGciOiJIUaI1NiJ9.ayJ1c2VyX2F1dGhlbnRpY2F0aW9uX2lqIjoiMTcxOTU2YmQtNa3ai00MDIxLWa5MDatYaViaTgwamQ0NjliIn0.loCdI3tAa2sICj8a5c6ip5TW_aFnn5RTj4HU-D6zq3c"
 }
 ```
+## Logout
+
+```
+POST /api/auth/logout (requires authentication)
+```
+
+**Response**
+Status: 204 No-Content
 
 ## Change password
 
@@ -112,3 +120,58 @@ new_password     | New password of the user.
 **Response**
 Status: 204 No-Content
 
+## Request password for reset
+
+Send an email to user if the email exist.
+
+```
+POST /api/auth/password_reset
+```
+
+**Parameters**
+
+Name  | Description
+------|-------------------------------------
+email | (required) valid email of an existing user.
+
+**Request**
+```json
+{
+    "email": "hello@example.com"
+}
+```
+
+**Response**
+Status: 200 OK
+```json
+{
+    "message": "Further instructions will be sent to the email if it exists"
+}
+```
+
+
+## Confirm password reset
+
+Confirm password reset for the user using the token sent in email.
+
+```
+POST /api/auth/password_reset_confirm
+```
+
+**Parameters**
+
+Name          | Description
+--------------|-------------------------------------
+new_password  | New password of the user
+token         | Token decoded from the url (verification link)
+
+**Request**
+```json
+{
+    "new_password": "new_pass",
+    "token" : "IgotTHISfromTHEverificationLINKinEmail"
+}
+```
+
+**Response**
+Status: 204 No-Content
