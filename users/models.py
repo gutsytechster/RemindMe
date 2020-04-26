@@ -7,10 +7,11 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
 
+from base.models import TimeStampedUUIDModel
 from .managers import CustomUserManager
 
 
-class CustomUser(AbstractUser):
+class CustomUser(AbstractUser, TimeStampedUUIDModel):
     username = None
     email = models.EmailField(_('email address'), unique=True)
     first_name = models.CharField(_('First Name'), max_length=255, blank=True,
