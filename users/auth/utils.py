@@ -3,7 +3,7 @@ from django.core.mail import send_mail
 from django.conf import settings
 from rest_framework import serializers
 
-from .email_content import PasswordReset
+from ..email_content import PasswordReset
 
 
 def get_and_authenticate_user(email, password):
