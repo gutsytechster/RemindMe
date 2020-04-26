@@ -1,10 +1,8 @@
-from django.urls import path
-from rest_framework.urlpatterns import format_suffix_patterns
-from .views import CreateView, DetailsView
+from rest_framework.routers import DefaultRouter
+from .views import EventViewSet
 
-urlpatterns = [
-    path('events/', CreateView.as_view(), name='create'),
-    path('events/<int:pk>/', DetailsView.as_view(), name='details'),
-]
+default_router = DefaultRouter(trailing_slash=False)
 
-urlpatterns = format_suffix_patterns(urlpatterns)
+default_router.register("events", EventViewSet, basename="event")
+
+urlpatterns = default_router.urls

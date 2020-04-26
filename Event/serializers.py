@@ -10,6 +10,6 @@ class EventSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Event
-        fields = ('id', 'name', 'owner', 'creation_date',
+        fields = ('url', 'id', 'name', 'owner', 'creation_date',
                   'modified_date', 'alert_date', 'alert_interval',)
         read_only_fields = ('creation_date', 'modified_date',)
