@@ -1,9 +1,9 @@
 # Authentication
 
-## Login
+### Login
 
 ```
-POST /api/auth/login
+POST /api/v1/auth/login
 ```
 
 **Parameters**
@@ -38,14 +38,14 @@ Status: 200 OK
     "is_active": true,
     "is_staff": false,
     "is_superuser": false,
-    "auth_token": "AkJ0b.Ai0iJEv1EiLCJhbGciOiJIUeI1NiJ9.eyJ1c2VyX2F1dGhlbnRpY2F0eW9uX2lEIjoiMTcxOTU2YmEtNe3Ai00MDIxLWe5MDetYeViATgwemE0NjliIn0.loCdI3te2sICj8e5c6ip5TW_eFNn5RTj4HU-e2q0m"
+    "auth_token": "Aebdbe703ccd50376ed3a7cf9fc7ae9614e0ac130"
 }
 ```
 
-## Register
+### Register
 
 ```
-POST /api/auth/register
+POST /api/v1/auth/register
 ```
 
 **Parameters**
@@ -84,22 +84,22 @@ Status: 201 Created
     "is_active": true,
     "is_staff": false,
     "is_superuser": false,
-    "auth_token": "eyJ0aXAiOiJqV1QiLCJhbGciOiJIUaI1NiJ9.ayJ1c2VyX2F1dGhlbnRpY2F0aW9uX2lqIjoiMTcxOTU2YmQtNa3ai00MDIxLWa5MDatYaViaTgwamQ0NjliIn0.loCdI3tAa2sICj8a5c6ip5TW_aFnn5RTj4HU-D6zq3c"
+    "auth_token": "ebdbe703ccd50376ed3a7cf9fc7ae9614e0ac130"
 }
 ```
-## Logout
+### Logout
 
 ```
-POST /api/auth/logout (requires authentication)
+POST /api/v1/auth/logout (requires authentication)
 ```
 
 **Response**
 Status: 204 No-Content
 
-## Change password
+### Change password
 
 ```
-POST /api/auth/password_change (requires authentication)
+POST /api/v1/auth/password_change (requires authentication)
 ```
 
 **Parameters**
@@ -120,12 +120,12 @@ new_password     | New password of the user.
 **Response**
 Status: 204 No-Content
 
-## Request password for reset
+### Request password for reset
 
 Send an email to user if the email exist.
 
 ```
-POST /api/auth/password_reset
+POST /api/v1/auth/password_reset
 ```
 
 **Parameters**
@@ -150,12 +150,12 @@ Status: 200 OK
 ```
 
 
-## Confirm password reset
+### Confirm password reset
 
 Confirm password reset for the user using the token sent in email.
 
 ```
-POST /api/auth/password_reset_confirm
+POST /api/v1/auth/password_reset_confirm
 ```
 
 **Parameters**
@@ -175,3 +175,199 @@ token         | Token decoded from the url (verification link)
 
 **Response**
 Status: 204 No-Content
+
+# Users
+
+### Get User Detail
+
+```
+GET /api/v1/users/:id (requires authentication)
+```
+
+Retrieves the detail of specific user corresponding to the ID provided
+
+**Response**
+Status: 200 OK
+```json
+{
+  "id": "b81cad6d-0d56-4841-85ee-82c446da38b9",
+  "email": "hello@example.com",
+  "first_name": "John",
+  "last_name": "Howley",
+  "phone_number": "+911236547890",
+  "is_staff": true,
+  "is_active": true
+}
+```
+
+### Update User Detail
+
+```
+PATCH /api/v1/users/:id (requires authentication)
+```
+
+Updates the detail of specific user corresponding to the ID provided
+
+**Request**
+```json
+{
+    "first_name": "Chris",
+    "last_name": "Hemsworth"
+}
+```
+
+**Response**
+Status: 200 OK
+```json
+{
+  "id": "b81cad6d-0d56-4841-85ee-82c446da38b9",
+  "email": "hello@example.com",
+  "first_name": "Chris",
+  "last_name": "Hemsworth",
+  "phone_number": "+911236547890",
+  "is_staff": true,
+  "is_active": true
+}
+```
+
+### Delete User
+
+```
+DELETE /api/v1/users/:id (requires authentication)
+```
+
+**Response**
+Status: 204 NO CONTENT
+
+# Events
+
+### Create Event
+
+Creates an event
+
+```
+POST /api/v1/events/ (requires authentication)
+```
+
+**Parameters**
+
+
+Name          | Data Type | Required | Default Value| Description
+--------------|-----------|----------|--------------|--------------------
+name          | text      | true     | null         | Title of the event.
+alert_date    | text      | true     | null         | The date at which the alert should be sent.
+alert_interval| text      | true     | null         | The interval at which the alert should be resent.
+
+
+**Request**
+```json
+{
+    "name": "Sample Event Name",
+    "alert_date": "2020-12-03T04:00:00Z",
+    "alert_interval": "02:00"
+}
+```
+
+**Response**
+Status: 201 CREATED
+```json
+{
+  "url": "http://localhost:8000/api/v1/events/6c402748-bb6f-406b-a3b7-a550617bcda2",
+  "id": "6c402748-bb6f-406b-a3b7-a550617bcda2",
+  "name": "Sample Event Name",
+  "owner": "http://localhost:8000/api/v1/users/b81cad6d-0d56-4841-85ee-82c446da38b9",
+  "created_at": "2020-04-26T21:48:14.541739+05:30",
+  "modified_at": "2020-04-26T21:48:14.541782+05:30",
+  "alert_date": "2020-12-03T09:30:00+05:30",
+  "alert_interval": "00:02:00"
+}
+```
+
+### Get Event List 
+
+```
+GET /api/v1/events/ (requires authentication)
+```
+
+This retrieves the list of events related with the authenticated user
+
+**Response**
+Status: 200 OK
+```json
+[
+  {
+    "url": "http://localhost:8000/api/v1/events/6c402748-bb6f-406b-a3b7-a550617bcda2",
+    "id": "6c402748-bb6f-406b-a3b7-a550617bcda2",
+    "name": "Sample Event Name",
+    "owner": "http://localhost:8000/api/v1/users/b81cad6d-0d56-4841-85ee-82c446da38b9",
+    "created_at": "2020-04-26T21:48:14.541739+05:30",
+    "modified_at": "2020-04-26T21:48:14.541782+05:30",
+    "alert_date": "2020-12-03T09:30:00+05:30",
+    "alert_interval": "00:02:00"
+  }
+]
+```
+
+### Retrieve Event
+
+```
+GET /api/v1/events/:id (requires authentication)
+```
+
+Retrieves the detail of specific event corresponding to the ID provided
+
+**Response**
+Status: 200 OK
+```json
+{
+  "url": "http://localhost:8000/api/v1/events/6c402748-bb6f-406b-a3b7-a550617bcda2",
+  "id": "6c402748-bb6f-406b-a3b7-a550617bcda2",
+  "name": "Sample Event Name",
+  "owner": "http://localhost:8000/api/v1/users/b81cad6d-0d56-4841-85ee-82c446da38b9",
+  "created_at": "2020-04-26T21:48:14.541739+05:30",
+  "modified_at": "2020-04-26T21:48:14.541782+05:30",
+  "alert_date": "2020-12-03T09:30:00+05:30",
+  "alert_interval": "00:02:00"
+}
+```
+
+### Update Event
+
+```
+PATCH /api/v1/events/:id (requires authentication)
+```
+
+Updates the specific event corresponding to the ID provided
+
+**Request**
+```json
+{
+    "name": "Updated Event Name"
+}
+```
+
+**Response**
+Status: 200 OK
+```json
+{
+  "url": "http://localhost:8000/api/v1/events/6c402748-bb6f-406b-a3b7-a550617bcda2",
+  "id": "6c402748-bb6f-406b-a3b7-a550617bcda2",
+  "name": "Updated Event Name",
+  "owner": "http://localhost:8000/api/v1/users/b81cad6d-0d56-4841-85ee-82c446da38b9",
+  "created_at": "2020-04-26T21:48:14.541739+05:30",
+  "modified_at": "2020-04-26T21:53:32.404905+05:30",
+  "alert_date": "2020-12-03T09:30:00+05:30",
+  "alert_interval": "00:02:00"
+}
+```
+
+### Delete Event
+
+```
+DELETE /api/v1/events/:id (requires authentication)
+```
+
+Deletes the event corresponding to the given ID
+
+**Response**
+Status: 204 NO CONTENT
