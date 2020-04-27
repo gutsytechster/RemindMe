@@ -7,7 +7,8 @@ class PasswordReset:
     body = (
         """ Dear {name},
 
-You have just requested a password reset for our application. Please click on the following link for setting up a new password.
+You have just requested a password reset for our application.
+Please click on the following link for setting up a new password.
 
 """
         + settings.PLATFORM_URL

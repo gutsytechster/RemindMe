@@ -1,12 +1,10 @@
-from django.contrib.auth import (get_user_model,
-                                 password_validation)
-
-from rest_framework.authtoken.models import Token
+from django.contrib.auth import get_user_model, password_validation
 from rest_framework import serializers
+from rest_framework.authtoken.models import Token
 
-from .utils import get_user_by_email
 from ..managers import CustomUserManager
 from ..serializers import UserSerializer
+from .utils import get_user_by_email
 
 User = get_user_model()
 
@@ -23,8 +21,14 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'email', 'password', 'first_name', 'last_name',
-                  'phone_number',)
+        fields = (
+            "id",
+            "email",
+            "password",
+            "first_name",
+            "last_name",
+            "phone_number",
+        )
 
     def validate_email(self, value):
         user = get_user_by_email(email=value)
@@ -46,8 +50,8 @@ class PasswordChangeSerializer(serializers.Serializer):
     new_password = serializers.CharField(required=True)
 
     def validate_current_password(self, value):
-        if not self.context['request'].user.check_password(value):
-            raise serializers.ValidationError('Current password does not match')
+        if not self.context["request"].user.check_password(value):
+            raise serializers.ValidationError("Current password does not match")
         return value
 
     def validate_new_password(self, value):
@@ -79,7 +83,7 @@ class AuthUserSerializer(UserSerializer):
     auth_token = serializers.SerializerMethodField()
 
     class Meta(UserSerializer.Meta):
-        fields = UserSerializer.Meta.fields + ('auth_token',)
+        fields = UserSerializer.Meta.fields + ("auth_token",)
 
     def get_auth_token(self, obj):
         token, created = Token.objects.get_or_create(user=obj)

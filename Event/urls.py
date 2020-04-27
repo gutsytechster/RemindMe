@@ -1,4 +1,5 @@
 from rest_framework.routers import DefaultRouter
+
 from .api import EventViewSet
 
 default_router = DefaultRouter(trailing_slash=False)

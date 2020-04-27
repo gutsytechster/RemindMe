@@ -1,16 +1,23 @@
-from rest_framework import mixins, viewsets
-from rest_framework import permissions
+from rest_framework import mixins, permissions, viewsets
 
+from .models import Event
 from .permissions import IsOwnerOrReadOnly
 from .serializers import EventSerializer
-from .models import Event
 
 
-class EventViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin,
-                   mixins.UpdateModelMixin, mixins.CreateModelMixin,
-                   mixins.DestroyModelMixin, viewsets.GenericViewSet):
+class EventViewSet(
+    mixins.ListModelMixin,
+    mixins.CreateModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.UpdateModelMixin,
+    mixins.DestroyModelMixin,
+    viewsets.GenericViewSet,
+):
     serializer_class = EventSerializer
-    permission_classes = (permissions.IsAuthenticated, IsOwnerOrReadOnly,)
+    permission_classes = (
+        permissions.IsAuthenticated,
+        IsOwnerOrReadOnly,
+    )
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
