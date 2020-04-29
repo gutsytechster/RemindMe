@@ -1,5 +1,7 @@
 # Authentication
 
+**Note**:- For endpoints which require the authentication, provide `Authorization` header as `Bearer "FakeAcessToken"`
+
 ### Login
 
 ```
@@ -38,7 +40,10 @@ Status: 200 OK
     "is_active": true,
     "is_staff": false,
     "is_superuser": false,
-    "auth_token": "Aebdbe703ccd50376ed3a7cf9fc7ae9614e0ac130"
+    "tokens": {
+        "refresh": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTU4ODI0MTU2NSwianRpIjoiYTA1OTUzZTE2OTNiNGU0M2IxMTllMjYwMzM5M2NhNWYiLCJ1c2VyX2lkIjoiYjgxY2FkNmQtMGQ1Ni00ODQxLTg1ZWUtODJjNDQ2ZGEzOGI5In0.t_P43_QiNFk2zhNdHRvJGD68jZWWcGrBtZd6G0obINw",
+        "access": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNTg4MTU1NDY1LCJqdGkiOiIyMmNhNTNkMjgyZDQ0NTc3YjdjMTA4ZDA4M2I2MjMxYyIsInVzZXJfaWQiOiJiODFjYWQ2ZC0wZDU2LTQ4NDEtODVlZS04MmM0NDZkYTM4YjkifQ.qWzd1WVmOpB5GCeCBLnjcnafZuudwPWWUPhSiCpUp9Q"
+    }
 }
 ```
 
@@ -84,7 +89,10 @@ Status: 201 Created
     "is_active": true,
     "is_staff": false,
     "is_superuser": false,
-    "auth_token": "ebdbe703ccd50376ed3a7cf9fc7ae9614e0ac130"
+    "tokens": {
+        "refresh": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTU4ODI0MTU2NSwianRpIjoiYTA1OTUzZTE2OTNiNGU0M2IxMTllMjYwMzM5M2NhNWYiLCJ1c2VyX2lkIjoiYjgxY2FkNmQtMGQ1Ni00ODQxLTg1ZWUtODJjNDQ2ZGEzOGI5In0.t_P43_QiNFk2zhNdHRvJGD68jZWWcGrBtZd6G0obINw",
+        "access": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNTg4MTU1NDY1LCJqdGkiOiIyMmNhNTNkMjgyZDQ0NTc3YjdjMTA4ZDA4M2I2MjMxYyIsInVzZXJfaWQiOiJiODFjYWQ2ZC0wZDU2LTQ4NDEtODVlZS04MmM0NDZkYTM4YjkifQ.qWzd1WVmOpB5GCeCBLnjcnafZuudwPWWUPhSiCpUp9Q"
+    }
 }
 ```
 ### Logout
@@ -93,8 +101,50 @@ Status: 201 Created
 POST /api/v1/auth/logout (requires authentication)
 ```
 
+**Parameters**
+
+Name              | Data Type | Required | Default Value  | Description
+------------------|-----------|----------|----------------|--------------------
+refresh           | text      | true     | null           | The refresh token of the current session.
+
+**Request**
+```json
+{
+  "refresh": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTU4ODI0MTU2NSwianRpIjoiYTA1OTUzZTE2OTNiNGU0M2IxMTllMjYwMzM5M2NhNWYiLCJ1c2VyX2lkIjoiYjgxY2FkNmQtMGQ1Ni00ODQxLTg1ZWUtODJjNDQ2ZGEzOGI5In0.t_P43_QiNFk2zhNdHRvJGD68jZWWcGrBtZd6G0obINw"
+}
+```
+
 **Response**
 Status: 204 No-Content
+
+
+### Refresh access token
+
+```
+POST /api/v1/auth/refresh
+```
+
+**Parameters**
+
+Name              | Data Type | Required | Default Value  | Description
+------------------|-----------|----------|----------------|--------------------
+refresh           | text      | true     | null           | The refresh token of the current session.
+
+**Request**
+```json
+{
+  "refresh": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTU4ODM1Mzg2OCwianRpIjoiNDQ4MDE2OTk3ZDJmNGM1YThiNGI3ODRlNTNmNzc2ZDgiLCJ1c2VyX2lkIjoiYjgxY2FkNmQtMGQ1Ni00ODQxLTg1ZWUtODJjNDQ2ZGEzOGI5In0.WyRZ_5rByRH9pZojHc5tmB9s95DPDDWHzFMj2lpTVkw"
+}
+```
+
+**Response**
+Status: 200 OK
+
+```json
+{
+  "access": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNTg4MTgxOTkwLCJqdGkiOiJjZGQyNGI2NTNjYWQ0MmU3ODZkYmExMDhmYTZlYjNjMiIsInVzZXJfaWQiOiJiODFjYWQ2ZC0wZDU2LTQ4NDEtODVlZS04MmM0NDZkYTM4YjkifQ.imu9eIQfI-6Kgbuw4os6_3kY335cnWWN0RzAAXr9qUk"
+}
+```
 
 ### Change password
 

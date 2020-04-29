@@ -1,9 +1,11 @@
 from django.contrib.auth import get_user_model, password_validation
 from rest_framework import serializers
-from rest_framework.authtoken.models import Token
+from rest_framework_simplejwt.exceptions import TokenError
+from rest_framework_simplejwt.tokens import RefreshToken
 
 from ..managers import CustomUserManager
 from ..serializers import UserSerializer
+from .tokens import get_tokens_for_user
 from .utils import get_user_by_email
 
 User = get_user_model()
@@ -12,6 +14,16 @@ User = get_user_model()
 class UserLoginSerializer(serializers.Serializer):
     email = serializers.CharField(max_length=300, required=True)
     password = serializers.CharField(required=True, write_only=True)
+
+
+class UserLogoutSerializer(serializers.Serializer):
+    refresh = serializers.CharField(max_length=300, required=True)
+
+    def save(self, **kwargs):
+        try:
+            RefreshToken(self.validated_data["refresh"]).blacklist()
+        except TokenError:
+            raise serializers.ValidationError("Token is invalid or expired")
 
 
 class UserRegisterSerializer(serializers.ModelSerializer):
@@ -71,20 +83,12 @@ class PasswordResetConfirmSerializer(serializers.Serializer):
         password_validation.validate_password(value)
         return value
 
-    def validate_token(self, value):
-        try:
-            Token.objects.get(key=value)
-        except Token.DoesNotExist:
-            raise serializers.ValidationError("Invalid token")
-        return value
-
 
 class AuthUserSerializer(UserSerializer):
-    auth_token = serializers.SerializerMethodField()
+    tokens = serializers.SerializerMethodField()
 
     class Meta(UserSerializer.Meta):
-        fields = UserSerializer.Meta.fields + ("auth_token",)
+        fields = UserSerializer.Meta.fields + ("tokens",)
 
-    def get_auth_token(self, obj):
-        token, created = Token.objects.get_or_create(user=obj)
-        return token.key
+    def get_tokens(self, obj):
+        return get_tokens_for_user(obj)
