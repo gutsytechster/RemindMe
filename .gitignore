@@ -6,6 +6,7 @@ local_settings.py
 db.sqlite3
 .Python
 build/
+static/
 develop-eggs/
 dist/
 downloads/
