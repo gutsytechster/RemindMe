@@ -1,6 +1,5 @@
 from django.contrib.auth import get_user_model
 from rest_framework import mixins, viewsets
-from rest_framework.authtoken.models import Token
 from rest_framework.permissions import IsAuthenticated
 
 from .permissions import IsOwner
@@ -22,4 +21,3 @@ class UserViewSet(
     def perform_destroy(self, instance):
         instance.is_active = False
         instance.save()
-        Token.objects.filter(user=instance).delete()
