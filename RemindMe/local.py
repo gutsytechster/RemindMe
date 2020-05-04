@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "corsheaders",
     "phonenumber_field",
     "rest_framework_simplejwt.token_blacklist",
     "rest_framework",
@@ -53,6 +54,7 @@ INSTALLED_APPS = [
 AUTH_USER_MODEL = "users.CustomUser"
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -151,3 +153,10 @@ REST_FRAMEWORK = {
     ],
     "EXCEPTION_HANDLER": "hipo_drf_exceptions.handler",
 }
+
+
+# CORS settings
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_METHODS = ["DELETE", "GET", "OPTIONS", "PATCH", "POST", "PUT"]
+CORS_ALLOW_HEADERS = ["*"]
