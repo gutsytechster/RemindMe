@@ -89,10 +89,8 @@ WSGI_APPLICATION = "src.RemindMe.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
-DATABASES = {
-    "default": env.db("DATABASE_URL")
-}
-DATABASES['default']['ENGINE'] = 'django.db.backends.postgresql_psycopg2'
+DATABASES = {"default": env.db("DATABASE_URL")}
+DATABASES["default"]["ENGINE"] = "django.db.backends.postgresql_psycopg2"
 
 
 # Password validation
@@ -116,7 +114,7 @@ EMAIL_HOST_PASSWORD = env("PASSWORD")
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 
-PLATFORM_URL = "localhost:8000/"
+PLATFORM_URL = "localhost:4200/"
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 
@@ -161,3 +159,10 @@ CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_METHODS = ["DELETE", "GET", "OPTIONS", "PATCH", "POST", "PUT"]
 CORS_ALLOW_HEADERS = ["*"]
+
+
+# Celery stuff
+CELERY_ACCEPT_CONTENT = ["application/json"]
+CELERY_TASK_SERIALIZER = "json"
+CELERY_RESULT_SERIALIZER = "json"
+CELERY_BROKER_URL = "amqp://guest:guest@localhost:5672//"

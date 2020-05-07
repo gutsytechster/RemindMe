@@ -1,10 +1,11 @@
 #!/usr/bin/env python
-import os
+# import os
 import sys
 
+from src.base.services import _set_django_settings_module
 
 if __name__ == "__main__":
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "src.RemindMe.production")
+    _set_django_settings_module()
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:

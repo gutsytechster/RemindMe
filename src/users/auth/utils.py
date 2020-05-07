@@ -1,12 +1,11 @@
 from uuid import UUID
 
-from django.conf import settings
 from django.contrib.auth import authenticate, get_user_model
-from django.core.mail import send_mail
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 
 from src.base import exceptions as exc
+from src.base.tasks import send_email
 
 from ..email_content import PasswordReset
 
@@ -34,12 +33,10 @@ def get_user_by_email(email: str):
 
 
 def send_password_reset_email(user, token):
-    send_mail(
+    send_email.delay(
         subject=PasswordReset.subject,
-        message=PasswordReset.body.format(name=user.first_name, token=token),
-        from_email=settings.EMAIL_HOST_USER,
-        recipient_list=[user.email],
-        fail_silently=False,
+        body=PasswordReset.body.format(name=user.first_name, token=token),
+        to_email=user.email,
     )
 
 
