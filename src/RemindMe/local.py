@@ -46,9 +46,9 @@ INSTALLED_APPS = [
     "phonenumber_field",
     "rest_framework_simplejwt.token_blacklist",
     "rest_framework",
-    "Event",
-    "users",
-    "base",
+    "src.Event",
+    "src.users",
+    "src.base",
 ]
 
 AUTH_USER_MODEL = "users.CustomUser"
@@ -65,7 +65,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = "RemindMe.urls"
+ROOT_URLCONF = "src.RemindMe.urls"
 
 TEMPLATES = [
     {
@@ -83,7 +83,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "RemindMe.wsgi.application"
+WSGI_APPLICATION = "src.RemindMe.wsgi.application"
 
 
 # Database
@@ -142,6 +142,7 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=15),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=2),
+    "ROTATE_REFRESH_TOKENS": True,
 }
 
 

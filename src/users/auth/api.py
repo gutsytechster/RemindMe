@@ -4,7 +4,7 @@ from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 
-from base.mixins import MultipleSerializerMixin
+from src.base.mixins import MultipleSerializerMixin
 
 from . import serializers
 from .tokens import (

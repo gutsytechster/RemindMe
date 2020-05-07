@@ -4,7 +4,7 @@ from rest_framework_simplejwt.exceptions import TokenError
 from rest_framework_simplejwt.token_blacklist.models import OutstandingToken
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from base import exceptions as exc
+from src.base import exceptions as exc
 
 from .utils import decode_uuid_from_base64, encode_uuid_to_base64
 
