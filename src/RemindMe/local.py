@@ -16,7 +16,7 @@ from datetime import timedelta
 import environ
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = environ.Path(__file__) - 3
 
 env = environ.Env()
 env.read_env(os.path.join(BASE_DIR, ".env"))
