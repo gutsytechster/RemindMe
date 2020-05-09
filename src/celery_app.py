@@ -1,7 +1,7 @@
 from celery import Celery
 from django.conf import settings
 
-from src.base.services import _set_django_settings_module
+from base.services import _set_django_settings_module
 
 _set_django_settings_module()
 

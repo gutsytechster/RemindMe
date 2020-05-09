@@ -1,0 +1,58 @@
+version: "3"
+
+services:
+  djangoapp:
+    restart: always
+    build:
+      context: ./
+      dockerfile: ./docker-build/djangoapp/Dockerfile
+    image: djangoapp
+    env_file: ./.env
+    container_name: djangoapp
+    volumes:
+      - ./src/:/app
+    depends_on:
+      - db
+      - rabbit
+    ports:
+      - "8000:8000"
+    command: bash -c "python manage.py collectstatic --noinput && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+
+  db:
+    image: postgres
+    container_name: db_cont
+    env_file:
+      - ./.env
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_vol:/var/lib/postgresql/data
+
+  rabbit:
+    build:
+      context: ./
+      dockerfile: ./docker-build/rabbitmq/dockerfile-rabbit.df
+    image: rabbit-custom
+    container_name: rabbit
+    hostname: test
+    env_file:
+      - ./docker-build/rabbitmq/rabbitmq.conf
+    ports:
+      - "5672:5672"
+
+  celery:
+    image: djangoapp
+    container_name: celery
+    depends_on:
+      - db
+      - rabbit
+    env_file:
+      - ./.env
+    volumes:
+      - media:/app/media/
+    command: celery --app=celery_app:app worker
+
+volumes:
+  db_vol:
+  static:
+  media:

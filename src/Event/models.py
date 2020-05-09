@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.db import models
 
-from src.base.models import TimeStampedUUIDModel
+from base.models import TimeStampedUUIDModel
 
 
 class Event(TimeStampedUUIDModel):

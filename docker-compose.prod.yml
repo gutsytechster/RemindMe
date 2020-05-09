@@ -1,0 +1,74 @@
+version: "3"
+
+services:
+  djangoapp:
+    restart: always
+    build:
+      context: ./
+      dockerfile: ./docker-build/djangoapp/Dockerfile
+    image: djangoapp
+    environment:
+      - EMAIL
+      - PASSWORD
+      - SECRET_KEY
+      - BUILD_STAGE
+      - DEBUG
+      - BROKER_URL
+    container_name: djangoapp
+    volumes:
+      - ./src/:/app
+    depends_on:
+      - db
+      - rabbit
+    ports:
+      - "8000:8000"
+    command: bash -c "python manage.py collectstatic --noinput && python manage.py migrate && gunicorn RemindMe.wsgi --log-file -"
+
+  db:
+    image: postgres
+    container_name: db_cont
+    environment:
+      - POSTGRES_DB
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_vol:/var/lib/postgresql/data
+
+  rabbit:
+    build:
+      context: ./
+      dockerfile: ./docker-build/rabbitmq/dockerfile-rabbit.df
+    image: rabbit-custom
+    container_name: rabbit
+    hostname: test
+    environment:
+      - DEFAULT_VHOST
+      - DEFAULT_USER
+      - DEFAULT_PASS
+      - HEARTBEAT
+    ports:
+      - "5672:5672"
+
+  celery:
+    image: djangoapp
+    container_name: celery
+    depends_on:
+      - db
+      - rabbit
+    environment:
+      - EMAIL
+      - PASSWORD
+      - SECRET_KEY
+      - BUILD_STAGE
+      - DEBUG
+      - BROKER_URL
+    volumes:
+      - media:/app/media/
+    command: celery --app=celery_app:app worker
+
+volumes:
+  db_vol:
+  static:
+  media:

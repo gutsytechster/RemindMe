@@ -1,0 +1,9 @@
+FROM rabbitmq:3.7-management
+
+WORKDIR /
+
+COPY ./docker-build/rabbitmq/rabbitmq.conf /etc/rabbitmq/
+
+RUN chown rabbitmq:rabbitmq /etc/rabbitmq/rabbitmq.conf
+
+ENTRYPOINT ["rabbitmq-server"]

@@ -4,8 +4,8 @@ from django.contrib.auth import authenticate, get_user_model
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 
-from src.base import exceptions as exc
-from src.base.tasks import send_email
+from base import exceptions as exc
+from base.tasks import send_email
 
 from ..email_content import PasswordReset
 

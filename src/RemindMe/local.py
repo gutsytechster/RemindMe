@@ -46,9 +46,9 @@ INSTALLED_APPS = [
     "phonenumber_field",
     "rest_framework_simplejwt.token_blacklist",
     "rest_framework",
-    "src.Event",
-    "src.users",
-    "src.base",
+    "Event",
+    "users",
+    "base",
 ]
 
 AUTH_USER_MODEL = "users.CustomUser"
@@ -65,7 +65,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = "src.RemindMe.urls"
+ROOT_URLCONF = "RemindMe.urls"
 
 TEMPLATES = [
     {
@@ -83,14 +83,14 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "src.RemindMe.wsgi.application"
+WSGI_APPLICATION = "RemindMe.wsgi.application"
 
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
 DATABASES = {"default": env.db("DATABASE_URL")}
-DATABASES["default"]["ENGINE"] = "django.db.backends.postgresql_psycopg2"
+DATABASES["default"]["ENGINE"] = "django.db.backends.postgresql"
 
 
 # Password validation
@@ -165,4 +165,4 @@ CORS_ALLOW_HEADERS = ["*"]
 CELERY_ACCEPT_CONTENT = ["application/json"]
 CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_SERIALIZER = "json"
-CELERY_BROKER_URL = "amqp://guest:guest@localhost:5672//"
+CELERY_BROKER_URL = env("BROKER_URL")

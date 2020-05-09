@@ -3,7 +3,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from phonenumber_field.modelfields import PhoneNumberField
 
-from src.base.models import TimeStampedUUIDModel
+from base.models import TimeStampedUUIDModel
 
 from .managers import CustomUserManager
 

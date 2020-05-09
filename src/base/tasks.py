@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.core.mail import send_mail
 
-from src.celery_app import app
+from celery_app import app
 
 
 @app.task
