@@ -3,9 +3,9 @@ from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
-from base import exceptions as exc
-from base import response
-from base.mixins import MultipleSerializerMixin
+from src.base import exceptions as exc
+from src.base import response
+from src.base.mixins import MultipleSerializerMixin
 
 from . import serializers
 from .tokens import (

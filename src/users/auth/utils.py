@@ -4,8 +4,8 @@ from django.contrib.auth import authenticate, get_user_model
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 
-from base import exceptions as exc
-from base.tasks import send_email
+from src.base import exceptions as exc
+from src.tasks import send_email
 
 from ..email_content import PasswordReset
 
@@ -33,7 +33,7 @@ def get_user_by_email(email: str):
 
 
 def send_password_reset_email(user, token):
-    send_email.delay(
+    send_email(
         subject=PasswordReset.subject,
         body=PasswordReset.body.format(name=user.first_name, token=token),
         to_email=user.email,

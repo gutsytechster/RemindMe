@@ -46,9 +46,10 @@ INSTALLED_APPS = [
     "phonenumber_field",
     "rest_framework_simplejwt.token_blacklist",
     "rest_framework",
-    "Event",
-    "users",
-    "base",
+    "background_task",
+    "src.Event",
+    "src.users",
+    "src.base",
 ]
 
 AUTH_USER_MODEL = "users.CustomUser"
@@ -65,7 +66,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = "RemindMe.urls"
+ROOT_URLCONF = "src.RemindMe.urls"
 
 TEMPLATES = [
     {
@@ -83,7 +84,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "RemindMe.wsgi.application"
+WSGI_APPLICATION = "src.RemindMe.wsgi.application"
 
 
 # Database
@@ -159,10 +160,3 @@ CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_METHODS = ["DELETE", "GET", "OPTIONS", "PATCH", "POST", "PUT"]
 CORS_ALLOW_HEADERS = ["*"]
-
-
-# Celery stuff
-CELERY_ACCEPT_CONTENT = ["application/json"]
-CELERY_TASK_SERIALIZER = "json"
-CELERY_RESULT_SERIALIZER = "json"
-CELERY_BROKER_URL = env("BROKER_URL")

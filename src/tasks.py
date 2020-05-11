@@ -1,10 +1,9 @@
+from background_task import background
 from django.conf import settings
 from django.core.mail import send_mail
 
-from celery_app import app
 
-
-@app.task
+@background(schedule=5)
 def send_email(subject, body, to_email, from_email=settings.EMAIL_HOST_USER):
     send_mail(
         subject=subject,

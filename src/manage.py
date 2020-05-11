@@ -2,7 +2,7 @@
 # import os
 import sys
 
-from base.services import _set_django_settings_module
+from src.base.services import _set_django_settings_module
 
 if __name__ == "__main__":
     _set_django_settings_module()

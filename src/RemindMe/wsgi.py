@@ -8,7 +8,7 @@ https://docs.djangoproject.com/en/2.1/howto/deployment/wsgi/
 """
 from django.core.wsgi import get_wsgi_application
 
-from base.services import _set_django_settings_module
+from src.base.services import _set_django_settings_module
 
 _set_django_settings_module()
 

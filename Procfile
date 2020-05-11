@@ -1,3 +1,3 @@
 release: python src/manage.py migrate
-worker: celery worker -A src/celery_app -l INFO
+worker: python src/manage.py process_tasks
 web: gunicorn src.RemindMe.wsgi --log-file -
