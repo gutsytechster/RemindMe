@@ -1,9 +1,8 @@
 FROM python:3.6.9-slim
 
 RUN apt-get update && apt-get install -y gcc=4:8.3.0-1 libpq-dev=11.7-0+deb10u1 && rm -rf /var/lib/apt/lists/*
-COPY requirements.txt .
-RUN pip install -r requirements.txt
-RUN rm requirements.txt
-
+ENV PYTHONDONTWRITEBYTECODE 1
+RUN mkdir /app
 WORKDIR /app
-COPY . /app
+COPY . /app/
+RUN pip install -r /app/requirements.txt

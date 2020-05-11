@@ -16,7 +16,7 @@ from datetime import timedelta
 import environ
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = environ.Path(__file__) - 3
+BASE_DIR = environ.Path(__file__) - 2
 
 env = environ.Env()
 env.read_env(os.path.join(BASE_DIR, ".env"))
@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt.token_blacklist",
     "rest_framework",
     "background_task",
-    "src.Event",
+    "src.events",
     "src.users",
     "src.base",
 ]
@@ -66,7 +66,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = "src.RemindMe.urls"
+ROOT_URLCONF = "src.urls"
 
 TEMPLATES = [
     {
@@ -84,7 +84,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "src.RemindMe.wsgi.application"
+WSGI_APPLICATION = "wsgi.application"
 
 
 # Database
