@@ -19,10 +19,13 @@ class EventSerializer(serializers.HyperlinkedModelSerializer):
             "owner",
             "created_at",
             "modified_at",
-            "alert_date",
-            "alert_interval",
+            "description",
+            "scheduled_time",
+            "set_reminder",
+            "has_reminder_sent",
         )
         read_only_fields = (
             "created_at",
             "modified_at",
+            "has_reminder_sent",
         )

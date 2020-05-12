@@ -306,16 +306,18 @@ POST /api/v1/events/ (requires authentication)
 Name          | Data Type | Required | Default Value| Description
 --------------|-----------|----------|--------------|--------------------
 name          | text      | true     | null         | Title of the event.
-alert_date    | text      | true     | null         | The date at which the alert should be sent.
-alert_interval| text      | true     | null         | The interval at which the alert should be resent.
+description   | text      | true     | null         | Description of the event.
+scheduled_time| text      | true     | null         | The date and time of event.
+set_reminder  | boolean   | false    | True         | If reminder should be sent to the user for the event.
 
 
 **Request**
 ```json
 {
-    "name": "Sample Event Name",
-    "alert_date": "2020-12-03T04:00:00Z",
-    "alert_interval": "02:00"
+  "name": "Sample event",
+  "description": "sample description",
+  "scheduled_time": "2020-12-03T04:00:00Z",
+  "set_reminder": false
 }
 ```
 
@@ -323,14 +325,16 @@ alert_interval| text      | true     | null         | The interval at which the 
 Status: 201 CREATED
 ```json
 {
-  "url": "http://localhost:8000/api/v1/events/6c402748-bb6f-406b-a3b7-a550617bcda2",
-  "id": "6c402748-bb6f-406b-a3b7-a550617bcda2",
-  "name": "Sample Event Name",
-  "owner": "http://localhost:8000/api/v1/users/b81cad6d-0d56-4841-85ee-82c446da38b9",
-  "created_at": "2020-04-26T21:48:14.541739+05:30",
-  "modified_at": "2020-04-26T21:48:14.541782+05:30",
-  "alert_date": "2020-12-03T09:30:00+05:30",
-  "alert_interval": "00:02:00"
+  "url": "http://localhost:8000/api/v1/events/fb5272fb-b34b-4d02-9275-e9a5785b6199",
+  "id": "fb5272fb-b34b-4d02-9275-e9a5785b6199",
+  "name": "Sample event",
+  "owner": "http://localhost:8000/api/v1/users/a78b4e1f-cda7-4521-a3e9-5e687675840b",
+  "created_at": "2020-05-12T17:32:53.217026+05:30",
+  "modified_at": "2020-05-12T17:32:53.217127+05:30",
+  "description": "sample description",
+  "scheduled_time": "2020-12-03T09:30:00+05:30",
+  "set_reminder": false,
+  "has_reminder_sent": false
 }
 ```
 
@@ -347,14 +351,16 @@ Status: 200 OK
 ```json
 [
   {
-    "url": "http://localhost:8000/api/v1/events/6c402748-bb6f-406b-a3b7-a550617bcda2",
-    "id": "6c402748-bb6f-406b-a3b7-a550617bcda2",
-    "name": "Sample Event Name",
-    "owner": "http://localhost:8000/api/v1/users/b81cad6d-0d56-4841-85ee-82c446da38b9",
-    "created_at": "2020-04-26T21:48:14.541739+05:30",
-    "modified_at": "2020-04-26T21:48:14.541782+05:30",
-    "alert_date": "2020-12-03T09:30:00+05:30",
-    "alert_interval": "00:02:00"
+    "url": "http://localhost:8000/api/v1/events/fb5272fb-b34b-4d02-9275-e9a5785b6199",
+    "id": "fb5272fb-b34b-4d02-9275-e9a5785b6199",
+    "name": "Sample event",
+    "owner": "http://localhost:8000/api/v1/users/a78b4e1f-cda7-4521-a3e9-5e687675840b",
+    "created_at": "2020-05-12T17:32:53.217026+05:30",
+    "modified_at": "2020-05-12T17:32:53.217127+05:30",
+    "description": "sample description",
+    "scheduled_time": "2020-12-03T09:30:00+05:30",
+    "set_reminder": false,
+    "has_reminder_sent": false
   }
 ]
 ```
@@ -371,14 +377,16 @@ Retrieves the detail of specific event corresponding to the ID provided
 Status: 200 OK
 ```json
 {
-  "url": "http://localhost:8000/api/v1/events/6c402748-bb6f-406b-a3b7-a550617bcda2",
-  "id": "6c402748-bb6f-406b-a3b7-a550617bcda2",
-  "name": "Sample Event Name",
-  "owner": "http://localhost:8000/api/v1/users/b81cad6d-0d56-4841-85ee-82c446da38b9",
-  "created_at": "2020-04-26T21:48:14.541739+05:30",
-  "modified_at": "2020-04-26T21:48:14.541782+05:30",
-  "alert_date": "2020-12-03T09:30:00+05:30",
-  "alert_interval": "00:02:00"
+    "url": "http://localhost:8000/api/v1/events/fb5272fb-b34b-4d02-9275-e9a5785b6199",
+    "id": "fb5272fb-b34b-4d02-9275-e9a5785b6199",
+    "name": "Sample event",
+    "owner": "http://localhost:8000/api/v1/users/a78b4e1f-cda7-4521-a3e9-5e687675840b",
+    "created_at": "2020-05-12T17:32:53.217026+05:30",
+    "modified_at": "2020-05-12T17:32:53.217127+05:30",
+    "description": "sample description",
+    "scheduled_time": "2020-12-03T09:30:00+05:30",
+    "set_reminder": false,
+    "has_reminder_sent": false
 }
 ```
 
@@ -401,14 +409,16 @@ Updates the specific event corresponding to the ID provided
 Status: 200 OK
 ```json
 {
-  "url": "http://localhost:8000/api/v1/events/6c402748-bb6f-406b-a3b7-a550617bcda2",
-  "id": "6c402748-bb6f-406b-a3b7-a550617bcda2",
-  "name": "Updated Event Name",
-  "owner": "http://localhost:8000/api/v1/users/b81cad6d-0d56-4841-85ee-82c446da38b9",
-  "created_at": "2020-04-26T21:48:14.541739+05:30",
-  "modified_at": "2020-04-26T21:53:32.404905+05:30",
-  "alert_date": "2020-12-03T09:30:00+05:30",
-  "alert_interval": "00:02:00"
+    "url": "http://localhost:8000/api/v1/events/fb5272fb-b34b-4d02-9275-e9a5785b6199",
+    "id": "fb5272fb-b34b-4d02-9275-e9a5785b6199",
+    "name": "Updated Event Name",
+    "owner": "http://localhost:8000/api/v1/users/a78b4e1f-cda7-4521-a3e9-5e687675840b",
+    "created_at": "2020-05-12T17:32:53.217026+05:30",
+    "modified_at": "2020-05-12T17:32:53.217127+05:30",
+    "description": "sample description",
+    "scheduled_time": "2020-12-03T09:30:00+05:30",
+    "set_reminder": false,
+    "has_reminder_sent": false
 }
 ```
 

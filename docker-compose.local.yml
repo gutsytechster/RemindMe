@@ -23,7 +23,7 @@ services:
   process_task:
     restart: always
     image: djangoapp
-    command: python manage.py process_tasks
+    command: bash -c "python manage.py runscript src.clock & python manage.py process_tasks"
     env_file: ./.env
     volumes:
       - .:/app

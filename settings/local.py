@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "phonenumber_field",
     "rest_framework_simplejwt.token_blacklist",
     "rest_framework",
+    "django_extensions",
     "background_task",
     "src.events",
     "src.users",
