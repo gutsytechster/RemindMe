@@ -9,6 +9,8 @@ class EventSerializer(serializers.HyperlinkedModelSerializer):
     owner = serializers.HyperlinkedRelatedField(
         view_name="user-detail", read_only=True,
     )
+    # Used for output time in specific format
+    event_time = serializers.TimeField(format="%I:%M:%S %p", required=True)
 
     class Meta:
         model = Event
@@ -20,7 +22,8 @@ class EventSerializer(serializers.HyperlinkedModelSerializer):
             "created_at",
             "modified_at",
             "description",
-            "scheduled_time",
+            "event_date",
+            "event_time",
             "set_reminder",
             "has_reminder_sent",
         )

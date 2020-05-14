@@ -365,7 +365,8 @@ Name          | Data Type | Required | Default Value| Description
 --------------|-----------|----------|--------------|--------------------
 name          | text      | true     | null         | Title of the event.
 description   | text      | true     | null         | Description of the event.
-scheduled_time| text      | true     | null         | The date and time of event.
+event_date    | text      | true     | null         | The date of the event.(YYYY-MM-DD)
+event_time    | text      | true     | null         | The time of the event.(hh:mm:ss [AM|PM])
 set_reminder  | boolean   | false    | True         | If reminder should be sent to the user for the event.
 
 
@@ -374,7 +375,8 @@ set_reminder  | boolean   | false    | True         | If reminder should be sent
 {
   "name": "Sample event",
   "description": "sample description",
-  "scheduled_time": "2020-12-03T04:00:00Z",
+  "event_date": "2020-05-14",
+  "event_time": "1:26:00 PM",
   "set_reminder": false
 }
 ```
@@ -390,7 +392,8 @@ Status: 201 CREATED
   "created_at": "2020-05-12T17:32:53.217026+05:30",
   "modified_at": "2020-05-12T17:32:53.217127+05:30",
   "description": "sample description",
-  "scheduled_time": "2020-12-03T09:30:00+05:30",
+  "event_date": "2020-05-14",
+  "event_time": "01:26:00 PM",
   "set_reminder": false,
   "has_reminder_sent": false
 }
@@ -416,7 +419,8 @@ Status: 200 OK
     "created_at": "2020-05-12T17:32:53.217026+05:30",
     "modified_at": "2020-05-12T17:32:53.217127+05:30",
     "description": "sample description",
-    "scheduled_time": "2020-12-03T09:30:00+05:30",
+    "event_date": "2020-05-14",
+    "event_time": "01:26:00 PM",
     "set_reminder": false,
     "has_reminder_sent": false
   }
@@ -442,7 +446,8 @@ Status: 200 OK
     "created_at": "2020-05-12T17:32:53.217026+05:30",
     "modified_at": "2020-05-12T17:32:53.217127+05:30",
     "description": "sample description",
-    "scheduled_time": "2020-12-03T09:30:00+05:30",
+    "event_date": "2020-05-14",
+    "event_time": "01:26:00 PM",
     "set_reminder": false,
     "has_reminder_sent": false
 }
@@ -474,7 +479,8 @@ Status: 200 OK
     "created_at": "2020-05-12T17:32:53.217026+05:30",
     "modified_at": "2020-05-12T17:32:53.217127+05:30",
     "description": "sample description",
-    "scheduled_time": "2020-12-03T09:30:00+05:30",
+    "event_date": "2020-05-14",
+    "event_time": "01:26:00 PM",
     "set_reminder": false,
     "has_reminder_sent": false
 }

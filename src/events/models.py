@@ -12,7 +12,8 @@ class Event(TimeStampedUUIDModel):
     owner = models.ForeignKey(
         settings.AUTH_USER_MODEL, related_name="events", on_delete=models.CASCADE
     )
-    scheduled_time = models.DateTimeField()
+    event_date = models.DateField()
+    event_time = models.TimeField()
     has_reminder_sent = models.BooleanField(default=False)
     set_reminder = models.BooleanField(default=True)
 
