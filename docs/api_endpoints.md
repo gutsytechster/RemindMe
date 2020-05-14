@@ -39,7 +39,6 @@ Status: 200 OK
     "phone_number": "",
     "is_active": true,
     "is_staff": false,
-    "is_superuser": false,
     "tokens": {
         "refresh": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTU4ODI0MTU2NSwianRpIjoiYTA1OTUzZTE2OTNiNGU0M2IxMTllMjYwMzM5M2NhNWYiLCJ1c2VyX2lkIjoiYjgxY2FkNmQtMGQ1Ni00ODQxLTg1ZWUtODJjNDQ2ZGEzOGI5In0.t_P43_QiNFk2zhNdHRvJGD68jZWWcGrBtZd6G0obINw",
         "access": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNTg4MTU1NDY1LCJqdGkiOiIyMmNhNTNkMjgyZDQ0NTc3YjdjMTA4ZDA4M2I2MjMxYyIsInVzZXJfaWQiOiJiODFjYWQ2ZC0wZDU2LTQ4NDEtODVlZS04MmM0NDZkYTM4YjkifQ.qWzd1WVmOpB5GCeCBLnjcnafZuudwPWWUPhSiCpUp9Q"
@@ -64,7 +63,8 @@ last_name         | text      | false    | ""             | last name of the use
 phone_number      | text      | false    | ""             | mobile number of the user.
 
 __NOTE__
-- Error out if email is already registered.
+- Error out if email is already registered with Status 400 Bad Request
+- Error out if email is registered but not verified with Status 403 Forbidden
 
 **Request**
 ```json
@@ -86,15 +86,73 @@ Status: 201 Created
     "last_name": "Howley",
     "email": "hello@example.com",
     "phone_number": "+911234567890",
+    "is_active": false,
+    "is_staff": false,
+}
+```
+
+### Validate Email Registeration
+
+```
+POST /api/v1/auth/validate_register
+```
+
+**Parameters**
+
+Name              | Data Type | Required | Default Value  | Description
+------------------|-----------|----------|----------------|--------------------
+token             | text      | true     | null           | Token decoded from the url (verification link)
+
+__NOTE__
+- Error out if email is already verified or no valid user exist with Status 400 Bad Request
+
+**Request**
+```json
+{
+  "token": "MzY5NWU0NjYtZmI1MC00NDM0LTgzZTctZGNiYmM0NDVlNmRi::5gh-df14f7e78f58286bc8dd"
+}
+```
+
+**Response**
+Status: 200 OK
+```json
+{
+    "id": "171956bd-717f-4021-a901-c5be80fd469b",
+    "first_name": "John",
+    "last_name": "Howley",
+    "email": "hello@example.com",
+    "phone_number": "",
     "is_active": true,
     "is_staff": false,
-    "is_superuser": false,
     "tokens": {
         "refresh": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTU4ODI0MTU2NSwianRpIjoiYTA1OTUzZTE2OTNiNGU0M2IxMTllMjYwMzM5M2NhNWYiLCJ1c2VyX2lkIjoiYjgxY2FkNmQtMGQ1Ni00ODQxLTg1ZWUtODJjNDQ2ZGEzOGI5In0.t_P43_QiNFk2zhNdHRvJGD68jZWWcGrBtZd6G0obINw",
         "access": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNTg4MTU1NDY1LCJqdGkiOiIyMmNhNTNkMjgyZDQ0NTc3YjdjMTA4ZDA4M2I2MjMxYyIsInVzZXJfaWQiOiJiODFjYWQ2ZC0wZDU2LTQ4NDEtODVlZS04MmM0NDZkYTM4YjkifQ.qWzd1WVmOpB5GCeCBLnjcnafZuudwPWWUPhSiCpUp9Q"
     }
 }
 ```
+
+### Send Verification Link to user
+
+```
+POST /api/v1/auth/send_verification_link
+```
+
+**Parameters**
+
+Name  | Description
+------|-------------------------------------
+email | (required) valid email of an existing user.
+
+**Request**
+```json
+{
+    "email": "hello@example.com"
+}
+```
+
+**Response**
+Status: 200 OK
+
 ### Logout
 
 ```

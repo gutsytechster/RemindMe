@@ -18,3 +18,25 @@ Regards,
 Team RemindMe
     """
     )
+
+
+class ValidateRegister:
+
+    subject = "[Remind Me] Verify Email Registeration"
+    body = (
+        """ Dear {name},
+
+Thank you for signing up. You can use the following link to complete your verified
+registration and get started on our platform:
+
+"""
+        + settings.PLATFORM_URL
+        + """?action=signup&token={token}
+
+If you need any assistance or have any questions about possible use cases of MapX, please feel free to reach out.
+
+Regards,
+Team RemindMe
+
+    """
+    )

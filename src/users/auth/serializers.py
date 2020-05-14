@@ -3,9 +3,11 @@ from rest_framework import serializers
 from rest_framework_simplejwt.exceptions import TokenError
 from rest_framework_simplejwt.tokens import RefreshToken
 
+from src.base import exceptions as exc
+
 from ..managers import CustomUserManager
 from ..serializers import UserSerializer
-from .tokens import get_tokens_for_user
+from .tokens import get_tokens_for_user, get_user_for_unique_token
 from .utils import get_user_by_email
 
 User = get_user_model()
@@ -31,6 +33,8 @@ class UserRegisterSerializer(serializers.ModelSerializer):
     A user serializer for registering the user
     """
 
+    email = serializers.EmailField(required=True)
+
     class Meta:
         model = User
         fields = (
@@ -45,11 +49,26 @@ class UserRegisterSerializer(serializers.ModelSerializer):
     def validate_email(self, value):
         user = get_user_by_email(email=value)
         if user:
-            raise serializers.ValidationError("Email is already taken")
+            if not user.is_active:
+                raise exc.PermissionDenied(
+                    "You have already registered, but did not verify your email. Please verify your email"
+                )
+            else:
+                raise serializers.ValidationError("Email is already taken")
         return CustomUserManager.normalize_email(value)
 
     def validate_password(self, value):
         password_validation.validate_password(value)
+        return value
+
+
+class ValidateRegisterSerializer(serializers.Serializer):
+    token = serializers.CharField(required=True)
+
+    def validate_token(self, value):
+        user = get_user_for_unique_token(value)
+        if user.is_active:
+            raise serializers.ValidationError("The user is already verified")
         return value
 
 
@@ -73,6 +92,10 @@ class PasswordChangeSerializer(serializers.Serializer):
 
 class PasswordResetSerializer(serializers.Serializer):
     email = serializers.EmailField(required=True)
+
+
+class VerificationLinkSerializer(PasswordResetSerializer):
+    pass
 
 
 class PasswordResetConfirmSerializer(serializers.Serializer):

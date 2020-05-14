@@ -7,7 +7,7 @@ from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from src.base import exceptions as exc
 from src.tasks import send_email
 
-from ..email_content import PasswordReset
+from ..email_content import PasswordReset, ValidateRegister
 
 
 def get_and_authenticate_user(email, password):
@@ -23,6 +23,7 @@ def create_user_account(email, password, first_name="", last_name="", **extra_fi
         password=password,
         first_name=first_name,
         last_name=last_name,
+        is_active=False,
         **extra_fields
     )
     return user
@@ -36,6 +37,14 @@ def send_password_reset_email(user, token):
     send_email(
         subject=PasswordReset.subject,
         body=PasswordReset.body.format(name=user.first_name, token=token),
+        to_email=user.email,
+    )
+
+
+def send_validate_registration_email(user, token):
+    send_email(
+        subject=ValidateRegister.subject,
+        body=ValidateRegister.body.format(name=user.first_name, token=token),
         to_email=user.email,
     )
 

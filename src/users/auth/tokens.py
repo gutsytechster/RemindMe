@@ -17,13 +17,13 @@ def get_tokens_for_user(user):
     }
 
 
-def get_token_for_password_reset(user):
+def get_unique_token_for_user(user):
     return "{}::{}".format(
         encode_uuid_to_base64(user.pk), PasswordResetTokenGenerator().make_token(user)
     )
 
 
-def get_user_for_password_reset_token(token):
+def get_user_for_unique_token(token):
     default_error_messages = {
         "invalid_token": "Invalid token or the token has expired",
         "user_not_found": "No user exists for given token",
