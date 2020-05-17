@@ -153,7 +153,6 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.SessionAuthentication",
     ],
     "EXCEPTION_HANDLER": "hipo_drf_exceptions.handler",
-    "TIME_INPUT_FORMATS": ["%I:%M:%S %p",],  # 6:22:44 PMs
 }
 
 
@@ -162,7 +161,3 @@ CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_METHODS = ["DELETE", "GET", "OPTIONS", "PATCH", "POST", "PUT"]
 CORS_ALLOW_HEADERS = ["*"]
-
-TIME_INPUT_FORMATS = [
-    "%I:%M:%S %p",  # 6:22:44 PM
-]

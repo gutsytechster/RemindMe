@@ -366,7 +366,7 @@ Name          | Data Type | Required | Default Value| Description
 name          | text      | true     | null         | Title of the event.
 description   | text      | true     | null         | Description of the event.
 event_date    | text      | true     | null         | The date of the event.(YYYY-MM-DD)
-event_time    | text      | true     | null         | The time of the event.(hh:mm:ss [AM|PM])
+event_time    | text      | true     | null         | The time of the event in 24-hr format.(hh:mm[:ss[.uuuuuu]])
 set_reminder  | boolean   | false    | True         | If reminder should be sent to the user for the event.
 
 
@@ -376,7 +376,7 @@ set_reminder  | boolean   | false    | True         | If reminder should be sent
   "name": "Sample event",
   "description": "sample description",
   "event_date": "2020-05-14",
-  "event_time": "1:26:00 PM",
+  "event_time": "13:26:05",
   "set_reminder": false
 }
 ```
@@ -393,7 +393,7 @@ Status: 201 CREATED
   "modified_at": "2020-05-12T17:32:53.217127+05:30",
   "description": "sample description",
   "event_date": "2020-05-14",
-  "event_time": "01:26:00 PM",
+  "event_time": "13:26:05",
   "set_reminder": false,
   "has_reminder_sent": false
 }
@@ -420,7 +420,7 @@ Status: 200 OK
     "modified_at": "2020-05-12T17:32:53.217127+05:30",
     "description": "sample description",
     "event_date": "2020-05-14",
-    "event_time": "01:26:00 PM",
+    "event_time": "13:26:05",
     "set_reminder": false,
     "has_reminder_sent": false
   }
@@ -447,7 +447,7 @@ Status: 200 OK
     "modified_at": "2020-05-12T17:32:53.217127+05:30",
     "description": "sample description",
     "event_date": "2020-05-14",
-    "event_time": "01:26:00 PM",
+    "event_time": "13:26:05",
     "set_reminder": false,
     "has_reminder_sent": false
 }
@@ -480,7 +480,7 @@ Status: 200 OK
     "modified_at": "2020-05-12T17:32:53.217127+05:30",
     "description": "sample description",
     "event_date": "2020-05-14",
-    "event_time": "01:26:00 PM",
+    "event_time": "13:26:05",
     "set_reminder": false,
     "has_reminder_sent": false
 }
