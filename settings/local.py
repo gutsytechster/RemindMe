@@ -116,7 +116,7 @@ EMAIL_HOST_PASSWORD = env("PASSWORD")
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 
-PLATFORM_URL = "http://localhost:4200/"
+PLATFORM_URL = env("PLATFORM_URL", default="https://example.com/")
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 
