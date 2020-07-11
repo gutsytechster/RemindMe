@@ -28,3 +28,4 @@ MANIFEST
 .git/
 *.orig
 .env
+.python-version
