@@ -87,7 +87,7 @@ Status: 201 Created
     "email": "hello@example.com",
     "phone_number": "+911234567890",
     "is_active": false,
-    "is_staff": false,
+    "is_staff": false
 }
 ```
 
